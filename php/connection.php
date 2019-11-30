@@ -1,21 +1,28 @@
 <?php 
 
     class Connection {
-        private $link = '';
+        private $message = '';
+        private $pdo;
 
         public function __construct($server, $user, $pass, $database)
         {
-            $this->link = mysqli_connect($server, $user, $pass, $database);
+            try {
+                $data_src_name = "mysql:host=".$server.";dbname=".$database;
+                $this->pdo = new PDO($data_src_name, $user, $pass);
+                $this->message = 'success';
+            } catch(PDOException $e) {
+                $this->message = 'failed: '.$e->getMessage();
+            }
         }
 
-        public function getLink() {
-            return $this->link;
+        public function getMessage() {
+            return $this->message;
         }
 
         public function newUser($data) { 
-            $query = "INSERT INTO users( username, email, pass ) VALUES ('".$data['user']."','".$data['email']."','".$data['pass']."')";
-            $result = mysqli_query($this->link, $query);
+            $sql = "INSERT INTO users( username, email, pass ) VALUES (:name, :email, :pass)";
+            $statement = $this->pdo->prepare($sql);
 
-            return $result;
+            $statement->execute(['name' => $data['name'], 'email' => $data['email'], 'pass' => $data['pass']]);
         }
     }

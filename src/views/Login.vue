@@ -1,6 +1,6 @@
 <template>
     <div class="login-page">
-        <h1>Welcome to your todo list</h1>
+        <h1 class="-title">Welcome to your todo list</h1>
         <form-container class="-login">
             <form v-on:submit.prevent>
                 <input-field label="Username">
@@ -10,13 +10,13 @@
                     <input type="password" v-model="password" name="password">
                 </input-field>
                 <input-field>
-                    <!-- <input class="button" type="submit" @click="login()" value="Login"> -->
-                    <a class="button" @click="login()">Login</a>
+                    <!-- <input class="-button" type="submit" @click="login()" value="Login"> -->
+                    <a class="-button" @click="login()">Login</a>
                 </input-field>
             </form>
         </form-container>
 
-        <a class="button" @click="toggleRegisterForm()" v-text="(registerUser) ? 'Close' : 'Register'"></a>
+        <a class="-button" @click="toggleRegisterForm()" v-text="(registerUser) ? 'Close' : 'Register'"></a>
         
         <form-container class="-register" v-if="registerUser">
             <form v-on:submit.prevent>
@@ -30,7 +30,7 @@
                     <input type="password" v-model="newPassword" name="password">
                 </input-field>
                 <input-field>
-                <a class="button" @click="register()" >Register</a>
+                <a class="-button" @click="register()" >Register</a>
                 </input-field>
             </form>
         </form-container>
@@ -64,7 +64,8 @@ export default {
             this.$store.dispatch('user/sendLoginForm', { user: this.username, pass: this.password });
         },
         register() {
-            console.log(this.newUser, this.newPassword)
+            console.log(this.newUser, this.newPassword, this.userMail)
+            this.$store.dispatch('user/create', { user: this.newUser, pass: this.newPassword, email: this.userMail});
         }
     }
 }

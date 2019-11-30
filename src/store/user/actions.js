@@ -2,18 +2,28 @@ import axios from 'axios';
 
 export default {
     sendLoginForm: (state, payload) => {
-        console.log(state);
-        console.log(payload);
-        // axios.get('http://localhost/').then(function(res) {
-        //     console.log(res);
-        // }).catch(function(error) {
-        //     console.log(error);
-        // }).finally(function(a) {
-        //     console.log(a);
-        // })
-        axios.get('http://localhost/').then(function(response) {
+        axios.get('http://localhost/', {
+            teste: 'test',
+            testando: 'testing'
+        }).then(function (response) {
             console.log(response)
-        }).catch(function(error) {
+        }).catch(function (error) {
+            console.log(error)
+        });
+    },
+    create: (state, payload) => {
+        console.log(payload);
+        axios({
+            method: 'POST',
+            url: 'http://localhost/user',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: payload
+        }
+        ).then(function (response) {
+            console.log(response)
+        }).catch(function (error) {
             console.log(error)
         });
     }

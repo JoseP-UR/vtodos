@@ -15,10 +15,11 @@ export default {
 <style lang="sass" scoped>
     .form-container
         border: 1px solid #ddd
-        border-radius: 10px
+        border-radius: $borderRadius
         width: 80%
         margin: 10px auto
         padding: 20px
+        background: #fff
 
         
 

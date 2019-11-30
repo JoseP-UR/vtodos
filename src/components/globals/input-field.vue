@@ -40,7 +40,7 @@ export default {
         >input[type="text"],input[type="password"],input[type="email"],textarea
             border: 1px solid #DDD
             box-shadow: 0px 0px 4px -2px #000
-            border-radius: 10px
+            border-radius: $borderRadius
             width: $childWidth
             height: 25px
         

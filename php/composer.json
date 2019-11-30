@@ -1,0 +1,12 @@
+{
+    "name": "josepur/vtodos",
+    "description": "simple vue todo list with slim framework",
+    "license": "copyright is a lie",
+    "authors": [
+        {
+            "name": "JoseP-UR",
+            "email": "urivesrosa@gmail.com"
+        }
+    ],
+    "require": {}
+}
