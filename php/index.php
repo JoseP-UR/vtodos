@@ -14,22 +14,25 @@ include './middleware.php';
 $app->get('/', function (Request $request, Response $response, $args) {
     $con = new Connection('localhost','root','','todos');
 
-    $data = strval($con->getMessage());
+    $data = strval($con->message);
     $response->getBody()->write($data);
     // return $response->withHeader('Content-Type', 'application/json');
     return $response;
 });
 
 $app->post('/user', function (Request $request, Response $response, $args) {
-    $arg = $request->getParsedBody();
-    $data = json_encode(array(
-        'user' => $arg['user'],
-        'email' => $arg['email'],
-        'pass' => $arg['pass'],
+    $arg = $request->getBody()->getContents();
 
-    ));
+    $data = json_decode($arg, true);
 
-    $response->getBody()->write($data);
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $con->newUser($data);
+
+    $message = json_encode($con->getMessage());
+
+    $response->getBody()->write($message);
+    
     return $response->withHeader('Content-Type', 'application/json');
 });
 

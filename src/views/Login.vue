@@ -61,11 +61,11 @@ export default {
         },
         login() {
             this.$router.push('/main');
-            this.$store.dispatch('user/sendLoginForm', { user: this.username, pass: this.password });
+            this.$store.dispatch('user/sendLoginForm', { name: this.username, pass: this.password });
         },
         register() {
             console.log(this.newUser, this.newPassword, this.userMail)
-            this.$store.dispatch('user/create', { user: this.newUser, pass: this.newPassword, email: this.userMail});
+            this.$store.dispatch('user/create', { name: this.newUser, pass: this.newPassword, email: this.userMail});
         }
     }
 }
