@@ -4,7 +4,7 @@ Work in progress...
 This is being made for educational purposes only
 
 This is what i'm trying to learn with this project:
-
+```
 -Slim framework
 -PDO
 -more PHP
@@ -12,6 +12,7 @@ This is what i'm trying to learn with this project:
 -more SQL
 -Some more vue
 -probably more stuff as this goes on
+```
 
 I'm trying my best to make this as well structured as possible, so bear with me ;)
 
