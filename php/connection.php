@@ -21,7 +21,7 @@
                 $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
                 $this->message = ['message' => 'success'];
             } catch(PDOException $e) {
-                $this->message = ['error' => $e->getMessage()];
+                $this->message = ['failed' => $e->getMessage()];
             }
         }
 
@@ -29,43 +29,87 @@
             return $this->message;
         }
 
-        public function setMessage($message) {
-            $this->message = $message;
+        public function setMessage($type, $message) {
+            $this->message = [(string) $type => $message];
         }
 
-        public function newUser($data) { 
-            $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
-
+        public function getUserByName($name) {
             try {
                 $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
             } catch(PDOException $e) {
-                die('failed: '.$e->getMessage());
+                $this->setMessage('failed', $e->getMessage());
+                return;
             }
+
+            $query = "SELECT * FROM users WHERE name=:name";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute(['name' => $name]);
+
+            return $statement->fetch();
+        }
+
+        public function getUserByEmail($email) {
+            try {
+                $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+            } catch(PDOException $e) {
+                $this->setMessage('failed', $e->getMessage());
+                return;
+            }
+
+            $query = "SELECT * FROM users WHERE email=:email";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute(['email' => $email]);
+
+            return $statement->fetch();
+        }
+
+        public function newUser($data) { 
             
-            $sql = "INSERT INTO users( name, email, pass ) VALUES (:name, :email, :pass)";
-
-            $statement = $pdo->prepare($sql);
-
             $email = $data['email'];
             $name = $data['name'];
             $pass = $data['pass'];
 
+            //validate data
+            
             if (!filter_var($email,FILTER_VALIDATE_EMAIL)) {
-                $this->setMessage(['error' => 'invalid email']);
+                $this->setMessage('error', 'invalid email');
                 return;
             }
 
             if(strlen($name) > 20 || strlen($name) < 3) {
-                $this->setMessage(['error' => 'invalid name']);
+                $this->setMessage('error', 'invalid name');
                 return;
             }
 
             if(strlen($pass) > 20 || strlen($pass) < 3) {
-                $this->setMessage(['error' => 'invalid pass']);
+                $this->setMessage('error', 'invalid pass');
                 return;
             }
 
+            try {
+                $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+            } catch(PDOException $e) {
+                $this->setMessage('failed', $e->getMessage());
+                return;
+            }
+
+            //check if user and email exists
+            if ($user = $this->getUserByName($name)) {
+                $this->setMessage('error', $user['name'].' is already registered');
+                return;
+            }
+
+            if ($user = $this->getUserByEmail($email)) {
+                $this->setMessage('error', $user['email'].' is already in use');
+                return;
+            }
+
+            $query = "INSERT INTO users( name, email, pass ) VALUES (:name, :email, :pass)";
+
+            $statement = $pdo->prepare($query);
             $statement->execute(['name' => $name, 'email' => $email, 'pass' => $pass]);
-            $this->setMessage(['message' => "{$name} succesfully registered"]);
+            $this->setMessage('message', "{$name} succesfully registered");
         }
     }

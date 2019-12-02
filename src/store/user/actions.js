@@ -13,7 +13,8 @@ export default {
     },
     create: (state, payload) => {
         console.log(payload);
-        axios({
+        let res;
+        return axios({
             method: 'POST',
             url: 'http://localhost/user',
             headers: {
@@ -21,10 +22,12 @@ export default {
             },
             data: payload
         }
-        ).then(function (response) {
-            console.log(response)
-        }).catch(function (error) {
-            console.log(error)
-        });
+        )
+        // .then(function (response) {
+        //     console.log(response);
+        //     res = response;
+        // }).catch(function (error) {
+        //     res = {error: error};
+        // }).finally(() => { return res });
     }
 }

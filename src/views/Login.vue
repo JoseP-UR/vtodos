@@ -3,11 +3,11 @@
         <h1 class="-title">Welcome to your todo list</h1>
         <form-container class="-login">
             <form v-on:submit.prevent>
-                <input-field label="Username">
-                    <input type="text" v-model="username" name="username">
+                <input-field label="name">
+                    <input type="text" v-model="name" name="name">
                 </input-field>
-                <input-field label="Password">
-                    <input type="password" v-model="password" name="password">
+                <input-field label="pass">
+                    <input type="password" v-model="pass" name="pass">
                 </input-field>
                 <input-field>
                     <!-- <input class="-button" type="submit" @click="login()" value="Login"> -->
@@ -19,15 +19,16 @@
         <a class="-button" @click="toggleRegisterForm()" v-text="(registerUser) ? 'Close' : 'Register'"></a>
         
         <form-container class="-register" v-if="registerUser">
+            <p class="message" v-if="regMessage" :class="'-'+regMessage.type">{{regMessage.body}}</p>
             <form v-on:submit.prevent>
-                <input-field label="Username">
-                    <input type="text" v-model="newUser" name="username">
+                <input-field label="name">
+                    <input type="text" v-model="newName" name="name">
                 </input-field>
                 <input-field label="E-mail">
                     <input type="email" v-model="userMail" name="usermail">
                 </input-field>
-                <input-field label="Password">
-                    <input type="password" v-model="newPassword" name="password">
+                <input-field label="pass">
+                    <input type="password" v-model="newPass" name="pass">
                 </input-field>
                 <input-field>
                 <a class="-button" @click="register()" >Register</a>
@@ -43,29 +44,38 @@ export default {
     name: 'Login',
     data() {
         return {
-            username: '',
-            password: '',
-            newUser: '',
-            newPassword: '',
+            name: '',
+            pass: '',
+            newName: '',
+            newPass: '',
             userMail: '',
-            errorFields: [],
+            regMessage: {
+                type: '',
+                body: ''
+            },
             registerUser: false
         }
     },
     methods: {
         toggleRegisterForm() {
             this.registerUser = !this.registerUser
-            this.newUser = '';
-            this.newPassword = '';
+            this.newName = '';
+            this.newPass = '';
             this.userMail= '';
         },
         login() {
             this.$router.push('/main');
-            this.$store.dispatch('user/sendLoginForm', { name: this.username, pass: this.password });
+            this.$store.dispatch('user/sendLoginForm', { name: this.name, pass: this.pass });
         },
         register() {
-            console.log(this.newUser, this.newPassword, this.userMail)
-            this.$store.dispatch('user/create', { name: this.newUser, pass: this.newPassword, email: this.userMail});
+            console.log(this.newName, this.newPass, this.userMail)
+            
+            this.$store.dispatch('user/create', { name: this.newName, pass: this.newPass, email: this.userMail}).then(res => {
+                let data = res.data;
+                let type = Object.keys(res.data)
+                this.regMessage.type = type;
+                this.regMessage.body = data[type];
+            });
         }
     }
 }
