@@ -5,6 +5,7 @@
             <form v-on:submit.prevent>
                 <input-field label="name">
                     <input type="text" v-model="name" name="name">
+                    
                 </input-field>
                 <input-field label="pass">
                     <input type="password" v-model="pass" name="pass">
@@ -19,16 +20,18 @@
         <a class="-button" @click="toggleRegisterForm()" v-text="(registerUser) ? 'Close' : 'Register'"></a>
         
         <form-container class="-register" v-if="registerUser">
-            <p class="message" v-if="regMessage" :class="'-'+regMessage.type">{{regMessage.body}}</p>
+            <p class="message" v-if="regMessage.body" :class="'-'+regMessage.type">{{regMessage.body}}</p>
             <form v-on:submit.prevent>
                 <input-field label="name">
                     <input type="text" v-model="newName" name="name">
+                    <h1 class="hint">At least 3 characters, max. 20</h1>
                 </input-field>
                 <input-field label="E-mail">
                     <input type="email" v-model="userMail" name="usermail">
                 </input-field>
                 <input-field label="pass">
                     <input type="password" v-model="newPass" name="pass">
+                    <h1 class="hint">At least 3 characters, max. 20</h1>
                 </input-field>
                 <input-field>
                 <a class="-button" @click="register()" >Register</a>
@@ -62,14 +65,20 @@ export default {
             this.newName = '';
             this.newPass = '';
             this.userMail= '';
+            this.regMessage = {
+                type: '',
+                body: ''
+            }
         },
         login() {
             this.$router.push('/main');
             this.$store.dispatch('user/sendLoginForm', { name: this.name, pass: this.pass });
         },
         register() {
-            console.log(this.newName, this.newPass, this.userMail)
-            
+            this.regMessage = {
+                type: '',
+                body: ''
+            }
             this.$store.dispatch('user/create', { name: this.newName, pass: this.newPass, email: this.userMail}).then(res => {
                 let data = res.data;
                 let type = Object.keys(res.data)

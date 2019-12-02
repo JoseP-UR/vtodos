@@ -21,6 +21,25 @@ export default {
         padding: 20px
         background: #fff
 
+
+        >.message
+            width: 45%
+            height: 30px
+            line-height: 30px
+            border-radius: $borderRadius
+            background: $primary
+            color: #FFFFFF
+            font-weight: 500
+            font-size: 18px
+            text-shadow: 0px 0px 10px 10px black
+            margin: auto
+            box-shadow: inset 0px 0px 10px -5px black
+
+            &.-error
+                background: $danger
+
+            &.-success
+                background: $success                
         
 
     

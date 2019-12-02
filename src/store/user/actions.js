@@ -12,8 +12,6 @@ export default {
         });
     },
     create: (state, payload) => {
-        console.log(payload);
-        let res;
         return axios({
             method: 'POST',
             url: 'http://localhost/user',
@@ -23,11 +21,5 @@ export default {
             data: payload
         }
         )
-        // .then(function (response) {
-        //     console.log(response);
-        //     res = response;
-        // }).catch(function (error) {
-        //     res = {error: error};
-        // }).finally(() => { return res });
     }
 }

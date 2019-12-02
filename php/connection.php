@@ -88,6 +88,7 @@
                 return;
             }
 
+            //setup PDO
             try {
                 $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
             } catch(PDOException $e) {
@@ -106,10 +107,12 @@
                 return;
             }
 
+
+            //insert new user
             $query = "INSERT INTO users( name, email, pass ) VALUES (:name, :email, :pass)";
 
             $statement = $pdo->prepare($query);
             $statement->execute(['name' => $name, 'email' => $email, 'pass' => $pass]);
-            $this->setMessage('message', "{$name} succesfully registered");
+            $this->setMessage('success', "{$name} succesfully registered");
         }
     }
