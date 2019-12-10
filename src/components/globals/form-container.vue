@@ -23,7 +23,7 @@ export default {
 
 
         >.message
-            width: 45%
+            width: 90%
             height: 30px
             line-height: 30px
             border-radius: $borderRadius

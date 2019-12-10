@@ -11,16 +11,45 @@ include './connection.php';
 
 include './middleware.php';
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $con = new Connection('localhost','root','','todos');
+$app->post('/user/login', function (Request $request, Response $response, $args) {
+    $arg = $request->getBody()->getContents();
 
-    $data = strval($con->message);
-    $response->getBody()->write($data);
-    // return $response->withHeader('Content-Type', 'application/json');
+    $data = json_decode($arg, true);
+
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $userData = $con->getUserByName($data['name']);
+
+    var_dump($userData);
+
+    if (!$userData) {
+        $message = json_encode(['error' => 'user not found']);
+
+        $response->getBody()->write($message);
+        return $response;
+    }
+
+    if (!password_verify($data['pass'], $userData['pass'])) {
+        $message = json_encode(['error' => 'invalid password']);
+
+        $response->getBody()->write($message);
+        return $response;
+    }
+
+    $message = json_encode([
+        'result' => 'success',
+        'data' => [
+            'uid' => $userData['id'],
+            'name' => $userData['name']
+            ]
+        ]);
+
+    $response->getBody()->write($message);
+    
     return $response;
 });
 
-$app->post('/user', function (Request $request, Response $response, $args) {
+$app->post('/user/register', function (Request $request, Response $response, $args) {
     $arg = $request->getBody()->getContents();
 
     $data = json_decode($arg, true);

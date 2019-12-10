@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 export default {
-    sendLoginForm: (state, payload) => {
-        axios.get('http://localhost/', {
-            teste: 'test',
-            testando: 'testing'
-        }).then(function (response) {
-            console.log(response)
-        }).catch(function (error) {
-            console.log(error)
+    login: (state, payload) => {
+        return axios({
+            method: 'POST',
+            url: 'http://localhost/user/login',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: payload
         });
     },
     create: (state, payload) => {
         return axios({
             method: 'POST',
-            url: 'http://localhost/user',
+            url: 'http://localhost/user/register',
             headers: {
                 "Content-Type": "application/json"
             },

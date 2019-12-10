@@ -19,7 +19,7 @@
 
             try {
                 $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
-                $this->message = ['message' => 'success'];
+                $this->message = ['result' => 'success'];
             } catch(PDOException $e) {
                 $this->message = ['failed' => $e->getMessage()];
             }
@@ -110,6 +110,8 @@
 
             //insert new user
             $query = "INSERT INTO users( name, email, pass ) VALUES (:name, :email, :pass)";
+
+            $pass = password_hash($pass, PASSWORD_DEFAULT);
 
             $statement = $pdo->prepare($query);
             $statement->execute(['name' => $name, 'email' => $email, 'pass' => $pass]);

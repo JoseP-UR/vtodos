@@ -2,6 +2,7 @@
     <div class="login-page">
         <h1 class="-title">Welcome to your todo list</h1>
         <form-container class="-login">
+              <p class="message" v-if="loginMessage.body" :class="'-'+loginMessage.type">{{loginMessage.body}}</p>
             <form v-on:submit.prevent>
                 <input-field label="name">
                     <input type="text" v-model="name" name="name">
@@ -56,6 +57,10 @@ export default {
                 type: '',
                 body: ''
             },
+            loginMessage: {
+                type: '',
+                body: ''
+            },
             registerUser: false
         }
     },
@@ -68,11 +73,23 @@ export default {
             this.regMessage = {
                 type: '',
                 body: ''
+            };
+            this.loginMessage = {
+                type: '',
+                body: ''
             }
         },
         login() {
-            this.$router.push('/main');
-            this.$store.dispatch('user/sendLoginForm', { name: this.name, pass: this.pass });
+            this.loginMessage = {
+                type: '',
+                body: ''
+            }
+            this.$store.dispatch('user/login', { name: this.name, pass: this.pass }).then(res => {
+                let data = res.data;
+                let type = Object.keys(res.data)
+                this.loginMessage.type = type;
+                this.loginMessage.body = data[type];
+            });
         },
         register() {
             this.regMessage = {
