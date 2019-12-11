@@ -19,9 +19,10 @@
 
             try {
                 $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
-                $this->message = ['result' => 'success'];
+                $this->setMessage('message', 'connected succesfully');
             } catch(PDOException $e) {
-                $this->message = ['failed' => $e->getMessage()];
+                $this->setMessage('failed', $e->getMessage());
+                die($this->message);
             }
         }
 

@@ -84,11 +84,15 @@ export default {
                 type: '',
                 body: ''
             }
+            let that = this;
             this.$store.dispatch('user/login', { name: this.name, pass: this.pass }).then(res => {
-                let data = res.data;
                 let type = Object.keys(res.data)
                 this.loginMessage.type = type;
-                this.loginMessage.body = data[type];
+                this.loginMessage.body = res.data[type];
+                if (!res.data.error) {
+                    this.$store.commit('user/SET_USER_DATA', res.data);
+                    this.$router.push('/main');
+                }
             });
         },
         register() {
@@ -97,10 +101,10 @@ export default {
                 body: ''
             }
             this.$store.dispatch('user/create', { name: this.newName, pass: this.newPass, email: this.userMail}).then(res => {
-                let data = res.data;
+                let result = res.data;
                 let type = Object.keys(res.data)
                 this.regMessage.type = type;
-                this.regMessage.body = data[type];
+                this.regMessage.body = result[type];
             });
         }
     }

@@ -20,8 +20,6 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
 
     $userData = $con->getUserByName($data['name']);
 
-    var_dump($userData);
-
     if (!$userData) {
         $message = json_encode(['error' => 'user not found']);
 
@@ -37,11 +35,8 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
     }
 
     $message = json_encode([
-        'result' => 'success',
-        'data' => [
             'uid' => $userData['id'],
             'name' => $userData['name']
-            ]
         ]);
 
     $response->getBody()->write($message);
