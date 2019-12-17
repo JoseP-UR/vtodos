@@ -6,8 +6,14 @@ import components from './components/globals'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import _ from 'lodash'
+import vueSession from 'vue-session'
 
+
+Vue.use(vueSession, { persist: true })
 library.add(fas)
+
+Vue.prototype.$_ = _
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

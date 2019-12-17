@@ -10,7 +10,9 @@ export default {
 
   mounted() {
     console.log(this);
-    this.$store.commit('list/SET_CONSOLE', 'test')
+    if (!this.$session.exists()) {
+      this.$session.start();
+    }
   }
 }
 </script>

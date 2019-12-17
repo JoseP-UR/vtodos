@@ -27,16 +27,26 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
         return $response;
     }
 
-    if (!password_verify($data['pass'], $userData['pass'])) {
+    if (!$data['session']) {
+        if (!password_verify($data['pass'], $userData['pass'])) {
+            $message = json_encode(['error' => 'invalid password']);
+    
+            $response->getBody()->write($message);
+            return $response;
+        }
+    }
+    
+    if ($data['pass'] != $userData['pass']) {
         $message = json_encode(['error' => 'invalid password']);
-
+    
         $response->getBody()->write($message);
         return $response;
     }
 
     $message = json_encode([
             'uid' => $userData['id'],
-            'name' => $userData['name']
+            'name' => $userData['name'],
+            'pass' => $userData['pass']
         ]);
 
     $response->getBody()->write($message);
