@@ -16,6 +16,13 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
 
     $data = json_decode($arg, true);
 
+    if (!array_key_exists('name', $data) || !array_key_exists('pass', $data)){
+        $message = json_encode(['error' => 'something is missing']);
+
+        $response->getBody()->write($message);
+        return $response;
+    }
+
     $con = new Connection('localhost', 'root', '', 'todos');
 
     $userData = $con->getUserByName($data['name']);
@@ -27,22 +34,32 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
         return $response;
     }
 
-    if (!$data['session']) {
-        if (!password_verify($data['pass'], $userData['pass'])) {
+    if (array_key_exists('session', $data)) {
+        if ($data['pass'] != $userData['pass']) {
             $message = json_encode(['error' => 'invalid password']);
-    
+        
             $response->getBody()->write($message);
             return $response;
         }
-    }
-    
-    if ($data['pass'] != $userData['pass']) {
-        $message = json_encode(['error' => 'invalid password']);
-    
+
+        $message = json_encode([
+            'uid' => $userData['id'],
+            'name' => $userData['name'],
+            'pass' => $userData['pass']
+        ]);
+
         $response->getBody()->write($message);
+    
         return $response;
     }
 
+    if (!password_verify($data['pass'], $userData['pass'])) {
+        $message = json_encode(['error' => 'invalid password']);
+
+        $response->getBody()->write($message);
+        return $response;
+    }
+    
     $message = json_encode([
             'uid' => $userData['id'],
             'name' => $userData['name'],
