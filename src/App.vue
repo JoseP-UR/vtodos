@@ -9,7 +9,6 @@ export default {
   name: 'app',
 
   mounted() {
-    console.log(this);
     if (!this.$session.exists()) {
       this.$session.start();
     }

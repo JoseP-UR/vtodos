@@ -37,7 +37,7 @@ export default {
             text-align: left
             margin-bottom: 5px
 
-        >input[type="text"],input[type="password"],input[type="email"],textarea
+        >input[type="text"],input[type="password"],input[type="email"],input[type="date"],textarea
             border: 1px solid #DDD
             box-shadow: 0px 0px 4px -2px #000
             border-radius: $borderRadius
