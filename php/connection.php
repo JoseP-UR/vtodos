@@ -118,4 +118,8 @@
             $statement->execute(['name' => $name, 'email' => $email, 'pass' => $pass]);
             $this->setMessage('success', "{$name} succesfully registered");
         }
+
+        public function createTask($data) {
+            var_dump($data);
+        }
     }

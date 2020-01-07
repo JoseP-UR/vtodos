@@ -1,6 +1,7 @@
 <template>
     <div class="create-form">
         <form-container>
+            <p class="message" v-if="message.body" :class="'-'+message.type">{{message.body}}</p>
             <a class="close" @click="close()">X</a>
         <h1 class="-title _reduced">Create a new task</h1>
             <input-field label="Due date">
@@ -9,7 +10,7 @@
             <input-field label="Description">
                 <input type="text" name="description" id="description" v-model="description">
             </input-field>
-            <a class="-button">Create</a>
+            <a class="-button" @click="create()">Create</a>
         </form-container>
     </div>
 </template>
@@ -20,10 +21,29 @@ export default {
     data() {
         return {
             dueDate: '',
-            description: ''
+            description: '',
+            message: {
+                type: '',
+                body: '',
+            }
         }
     },
     methods: {
+        create() {
+            if (!this.dueDate || !this.description) {
+                this.message.type = 'error';
+                this.message.body = 'Please fill in all the fields';
+                return;
+            }
+            this.message.type = '';
+            this.message.body = '';
+            let userData = this.$store.state.user.data;
+            let payload = { dueDate: this.dueDate, description: this.description, uid: userData.uid, name: userData.name, pass: userData.pass};
+            console.log(payload);
+            this.$store.dispatch('list/create', payload).then(res => {
+                console.log(res);
+            });
+        },
         close() {
 
             this.$emit('close')

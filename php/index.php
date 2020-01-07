@@ -88,6 +88,18 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
 });
 
 
+$app->post('/task/create', function (Request $request, Response $response, $args) {
+    $arg = $request->getBody()->getContents();
+
+    $data = json_decode($arg, true);
+
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $con->createTask($data);
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 
 
 
