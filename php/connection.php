@@ -119,7 +119,72 @@
             $this->setMessage('success', "{$name} succesfully registered");
         }
 
+
+
         public function createTask($data) {
-            var_dump($data);
+
+            $userName = $data['user']['name'];
+            $userPass = $data['user']['pass'];
+            $userId = $data['user']['uid'];
+            $duedate = $data['dueDate'];
+            $description = $data['description'];
+            $datecreated = date("Y-m-d");
+
+            $user = $this->getUserByName($userName);
+            if (!$user) {
+                $this->setMessage('error', 'user: '.$user['name'].' was not found');
+                return;
+            }
+
+            if ($user['pass'] != $userPass) {
+                $this->setMessage('error', 'corrupt password');
+                return;
+            }
+
+            try {
+                $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+            } catch(PDOException $e) {
+                $this->setMessage('failed', $e->getMessage());
+                return;
+            }
+
+            $query = "INSERT INTO tasks( userid, date_created, due_date, description ) VALUES (:userid, :datecreated, :duedate, :description)";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute(['userid' => $userId, 'datecreated' => $datecreated, 'duedate' => $duedate, 'description' => $description]);
+            $this->setMessage('success', true);
         }
+
+        public function retrieveList($uid) {
+        
+                try {
+                    $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+                } catch(PDOException $e) {
+                    $this->setMessage('failed', $e->getMessage());
+                    return;
+                }
+    
+                $query = "SELECT * FROM tasks WHERE userid=:uid";
+    
+                $statement = $pdo->prepare($query);
+                $statement->execute(['uid' => $uid]);
+
+                $data = $statement->fetchAll();
+
+                $message = [];
+
+                foreach($data as $task) {
+                    $chunk = [
+                        'id' => $task['id'],
+                        'dateCreated' => $task['date_created'],
+                        'dueDate' => $task['due_date'],
+                        'description' => $task['description']
+                    ];
+
+                    array_push($message, $chunk);
+                }
+    
+                return $message;
+        }
+    
     }

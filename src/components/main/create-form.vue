@@ -10,7 +10,7 @@
             <input-field label="Description">
                 <input type="text" name="description" id="description" v-model="description">
             </input-field>
-            <a class="-button" @click="create()">Create</a>
+            <a class="-button" @click="create()">{{(isLoading) ? 'Saving...' : 'Create'}}</a>
         </form-container>
     </div>
 </template>
@@ -25,7 +25,8 @@ export default {
             message: {
                 type: '',
                 body: '',
-            }
+            },
+            isLoading: false
         }
     },
     methods: {
@@ -38,14 +39,15 @@ export default {
             this.message.type = '';
             this.message.body = '';
             let userData = this.$store.state.user.data;
-            let payload = { dueDate: this.dueDate, description: this.description, uid: userData.uid, name: userData.name, pass: userData.pass};
-            console.log(payload);
+            let payload = { dueDate: this.dueDate, description: this.description, user: { uid: userData.uid, name: userData.name, pass: userData.pass }};
+
             this.$store.dispatch('list/create', payload).then(res => {
-                console.log(res);
+                if(res.data.success) {
+                    this.$emit('close');
+                }
             });
         },
         close() {
-
             this.$emit('close')
         }
     }

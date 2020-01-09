@@ -1,7 +1,7 @@
 <template>
     <div class="Main">
         <create-form v-if="createMode"
-        @close="createMode= false"
+        @close="update()"
         ></create-form>
         <h1 class="-title _reduced">Welcome to your main page, {{user.name}}.</h1>
         
@@ -50,9 +50,11 @@ export default {
                 if (res.data.error) {
                     console.error('corrupt session');
                     this.$router.push('/');
-                    return;
+                    return false;
                 }
                 this.$store.commit('user/SET_USER_DATA', res.data);
+                this.update();
+                return true;
             })
         }
         
@@ -63,6 +65,12 @@ export default {
             this.$session.start();
             this.$router.push('/');
 
+        },
+        update() {
+            this.$store.dispatch('list/fetch', this.$store.state.user.data.uid).then(res => {
+                this.$store.commit('list/UPDATE_LIST', res.data);
+            });
+            this.createMode= false
         }
     },
     mounted() {

@@ -12,5 +12,11 @@ export default {
             data: payload
         }
         )
+    },
+    fetch: (state, uid) => {
+        return axios({
+            method: 'GET',
+            url: 'http://localhost/task/list/'+uid,
+        })
     }
 }

@@ -1,5 +1,5 @@
 export default {
-    SET_CONSOLE(state, payload) {
-        console.log(state, payload)
+    UPDATE_LIST(state, payload) {
+        state.tasks = payload;
     }
 }

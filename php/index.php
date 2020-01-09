@@ -97,9 +97,28 @@ $app->post('/task/create', function (Request $request, Response $response, $args
 
     $con->createTask($data);
 
+    $message = json_encode($con->getMessage());
+
+    $response->getBody()->write($message);
+
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+$app->get('/task/list/{uid}', function (Request $request, Response $response, $args) {
+    $arg = $request->getBody()->getContents();
+
+    $data = json_decode($arg, true);
+
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $list = $con->retrieveList($args['uid']);
+
+    $message = json_encode($list);
+
+    $response->getBody()->write($message);
+    
+    return $response->withHeader('Content-Type', 'application/json');
+});
 
 
 
