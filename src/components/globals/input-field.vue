@@ -49,6 +49,17 @@ export default {
             display: block
             margin-top: 5px
             padding-left: 5px
+    
+        &.-task
+            display: flex
+
+            >input
+                flex-basis: 80%
+
+            >.-button
+                flex-basis: 19%
+                height: 30px
+                line-height: 30px
         
 
 </style>

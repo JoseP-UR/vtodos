@@ -178,13 +178,50 @@
                         'id' => $task['id'],
                         'dateCreated' => $task['date_created'],
                         'dueDate' => $task['due_date'],
-                        'description' => $task['description']
+                        'description' => $task['description'],
+                        'editing' => false
                     ];
 
                     array_push($message, $chunk);
                 }
     
                 return $message;
+        }
+
+        public function deleteTask ($id, $data) {
+            try {
+                $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+            } catch(PDOException $e) {
+                $this->setMessage('failed', $e->getMessage());
+                return;
+            }
+
+            
+            $uid = $data['user']['uid'];
+
+            $query = "DELETE FROM tasks WHERE userid=:uid AND id=:id";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute(['uid' => $uid, 'id' => $id]);
+            $this->setMessage('success', true); 
+
+        }
+
+        public function editTask($id, $data) {
+            try {
+                $pdo = new PDO($this->data_src_name, $this->user, $this->pass);
+            } catch(PDOException $e) {
+                $this->setMessage('failed', $e->getMessage());
+                return;
+            }
+
+            $uid = $data['user']['uid'];
+
+            $query = "UPDATE tasks SET description=:description WHERE id=:id AND userid=:uid";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute(['description' => $data['description'], 'uid' => $uid, 'id' => $id]);
+            $this->setMessage('success', true); 
         }
     
     }

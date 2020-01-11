@@ -121,6 +121,34 @@ $app->get('/task/list/{uid}', function (Request $request, Response $response, $a
 });
 
 
+$app->delete('/task/{id}/delete', function (Request $request, Response $response, $args) {
+    $arg = $request->getBody()->getContents();
+
+    $data = json_decode($arg, true);
+
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $con->deleteTask($args['id'], $data);
+
+    $message = json_encode($con->getMessage());
+
+    $response->getBody()->write($message);
+    
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+
+$app->put('/task/{id}/edit', function (Request $request, Response $response, $args) {
+    $arg = $request->getBody()->getContents();
+
+    $data = json_decode($arg, true);
+
+    $con = new Connection('localhost', 'root', '', 'todos');
+
+    $con->editTask($args['id'], $data);
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
 
 
 use Slim\Exception\HttpNotFoundException;

@@ -11,17 +11,7 @@
                 <a class="-button" @click="logout()">Logout</a>
             </div>
 
-            <div class="task-list">
-                <div class="task" v-for="task in tasks" :key="task.id">
-                    <div class="header">
-                        <span class="date"><b>Created: </b>{{task.dateCreated}}</span>
-                        <span class="date"><b>Due: </b>{{task.dueDate}}</span>
-                        <a class="-button">Edit</a>
-                        <a class="-button">Delete</a>
-                    </div>
-                    <div class="body" v-html="task.description"></div>
-                </div>
-            </div>
+            <task-list @update="update()"></task-list>
         </div>
     </div>
 </template>
@@ -29,6 +19,7 @@
 <script>
 import { mapState } from 'vuex';
 import createForm from '../components/main/create-form'
+import taskList from '../components/main/task-list'
 
 export default {
     name: 'Main',
@@ -81,7 +72,8 @@ export default {
         this.login();
     },
     components: {
-        createForm
+        createForm,
+        taskList
     }
 
 }
@@ -109,38 +101,6 @@ export default {
                 >.-button
                     width: 30%
                     margin: 0
-            
-            >.task-list
-                margin-top: 20px
-                border: 1px solid black
-                border-radius: 5px
-                padding: 10px
-
-
-                >.task
-                    border: 1px solid black
-                    margin-top: 15px
-
-                    >.header
-                        border-bottom: 1px solid black
-                        text-align: left
-                        padding: 10px 0
-                        background-color: #e8e8e8
-                        >.-button
-                            height: auto
-                            display: inline-block
-                            width: 50px
-                            margin-left: 15px
-                        
-                        >.date
-                            margin-left: 15px
-                            >b
-                                font-weight: bold
-                    
-                    >.body
-                        min-height: 40px
-                        text-align: left
-                        padding: 10px
     
 
 </style>
