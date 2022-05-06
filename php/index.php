@@ -23,7 +23,7 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
         return $response;
     }
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $userData = $con->getUserByName($data['name']);
 
@@ -76,7 +76,7 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
 
     $data = json_decode($arg, true);
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $con->newUser($data);
 
@@ -93,7 +93,7 @@ $app->post('/task/create', function (Request $request, Response $response, $args
 
     $data = json_decode($arg, true);
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $con->createTask($data);
 
@@ -109,7 +109,7 @@ $app->get('/task/list/{uid}', function (Request $request, Response $response, $a
 
     $data = json_decode($arg, true);
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $list = $con->retrieveList($args['uid']);
 
@@ -126,7 +126,7 @@ $app->delete('/task/{id}/delete', function (Request $request, Response $response
 
     $data = json_decode($arg, true);
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $con->deleteTask($args['id'], $data);
 
@@ -143,7 +143,7 @@ $app->put('/task/{id}/edit', function (Request $request, Response $response, $ar
 
     $data = json_decode($arg, true);
 
-    $con = new Connection('localhost', 'root', '', 'todos');
+    $con = new Connection('mysql', 'todos', 'todos', 'todos');
 
     $con->editTask($args['id'], $data);
 
