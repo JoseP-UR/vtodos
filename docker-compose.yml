@@ -24,6 +24,7 @@ services:
     build: ./php/
     volumes:
       - ./php:/var/www/html
+      - ./var/www/html/vendor
 
   mysql:
     container_name: mysql

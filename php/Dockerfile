@@ -22,5 +22,5 @@ RUN a2enmod rewrite
 
 WORKDIR /var/www/html/
 ADD . .
-RUN composer update
 RUN composer install
+RUN composer update
