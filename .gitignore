@@ -20,6 +20,6 @@ yarn-error.log*
 *.sln
 *.sw?
 
-/vendor/
 phpmyadmin
-mysql
+/mysql
+/php/vendor
