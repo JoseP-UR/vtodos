@@ -12,16 +12,24 @@
     import Input from '../inputs/Input.vue'
     import Button from '../inputs/Button.vue'
     import { ref } from 'vue'
+    import { parseForm } from '../composables/parseForm'
     
-    function submitRegistration(e: any) {
-        console.log(e)
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        console.log(formData)
+    function submitRegistration(e: Event) {
+        e.preventDefault();
+        const formData = parseForm(e.target as HTMLFormElement);
 
-        console.log(formData.forEach((value: any, key: any) => {
-            console.log(value, key)
-        }))
+        console.log(formData);
+        fetch('/api/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
     }
 </script>
 

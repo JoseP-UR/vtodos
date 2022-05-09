@@ -1,8 +1,8 @@
 <template>
     <h2>Login</h2>
     <form @submit="submitLogin">
-        <Input type="email" name="email" label="Email" />
-        <Input type="password" name="password" label="Password" />
+        <Input type="text" name="name" label="Username" />
+        <Input type="password" name="pass" label="Password" />
         <Button>Login</Button>
     </form>
 </template>
@@ -11,16 +11,24 @@
     import Input from '../inputs/Input.vue'
     import Button from '../inputs/Button.vue'
     import { ref } from 'vue'
+    import { parseForm } from '../composables/parseForm'
     
-    function submitLogin(e: any) {
-        console.log(e)
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        console.log(formData)
+    function submitLogin(e: Event) {
+        e.preventDefault();
+        const formData = parseForm(e.target as HTMLFormElement);
 
-        console.log(formData.forEach((value: any, key: any) => {
-            
-        }))
+        console.log(formData);
+        fetch('/api/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
     }
 </script>
 
