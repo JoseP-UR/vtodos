@@ -3,7 +3,7 @@ import App from './App.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import routes from './routes'
-
+import CustomAlert from './components/CustomAlert.vue'
 
 const app = createApp(App)
 

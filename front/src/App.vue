@@ -1,11 +1,20 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-</script>
-
 <template>
   <router-view></router-view>
+  <AlertBox v-if="alert.show"></AlertBox>
 </template>
+
+<script setup lang="ts">
+ import { useAlertState } from './store/alert';
+ import AlertBox from './components/AlertBox.vue';
+
+ const alert = useAlertState();
+
+ window.alert = (message: string, type: string = 'info') => {
+   alert.show = true;
+   alert.message = message;
+   alert.type = type;
+ };
+</script>
 
 <style>
 * {
