@@ -45,7 +45,7 @@ async function submitLogin(e: Event) {
         return;
     }
 
-    alert('error');
+    alert(data.error, 'error');
 }
 </script>
 

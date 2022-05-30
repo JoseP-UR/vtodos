@@ -28,7 +28,7 @@ function closeAlert() {
 onMounted(() => {
     setTimeout(() => {
         closeAlert();
-    }, 50000);
+    }, 5000);
 });
 </script>
 
@@ -47,8 +47,10 @@ onMounted(() => {
 
         .-info
             background-color: #f3d91e
-        
-            
+        .-error
+            background-color: #e74c3c
+        .-success
+            background-color: #2ecc71
 
     .alert
         position: relative
@@ -70,4 +72,14 @@ onMounted(() => {
         align-self: flex-end
         cursor: pointer
         margin: 0 2px 5px 0
+        padding: 5px
+    
+    .alert-content
+        padding: 10px
+
+    .alert-message
+        font-size: 1.2em
+        font-weight: bold
+        text-align: center
+        color: #000
 </style>
